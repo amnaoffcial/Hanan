@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malik Abdul Hanan — Video Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#181008;
+    --espresso:#3a2716;
+    --espresso-deep:#2a1a0d;
+    --tan:#c9a06a;
+    --tan-soft:#e2c99a;
+    --cream:#f3e9d8;
+    --copper:#b5652e;
+    --copper-bright:#d97f3f;
+    --line: rgba(243,233,216,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--cream);
+    font-family:'Work Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    color:var(--cream);
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ---------- sprocket / filmstrip divider ---------- */
+  .filmstrip{
+    height:22px;
+    width:100%;
+    background-image: radial-gradient(circle, var(--tan) 2.5px, transparent 2.6px);
+    background-size: 34px 22px;
+    background-position: 10px center;
+    background-repeat: repeat-x;
+    opacity:0.55;
+    background-color: transparent;
+    animation: strip-scroll 14s linear infinite;
+  }
+  @keyframes strip-scroll{
+    from{background-position-x:10px;}
+    to{background-position-x:-2380px;}
+  }
+
+  /* ---------- layout helpers ---------- */
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
+  section{padding:88px 0;}
+  .eyebrow{
+    font-size:0.8rem;
+    letter-spacing:0.03em;
+    color:var(--tan);
+    margin-bottom:10px;
+    font-weight:500;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(24,16,8,0.86);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:70px;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.15rem;
+    color:var(--cream);
+  }
+  .brand span{color:var(--copper-bright);}
+  .navlinks{display:flex; gap:32px; align-items:center;}
+  .navlinks a{font-size:0.95rem; color:var(--tan-soft); transition:color .2s;}
+  .navlinks a:hover{color:var(--cream);}
+  .nav-cta{
+    background:var(--copper);
+    color:var(--cream) !important;
+    padding:9px 20px;
+    border-radius:3px;
+    font-weight:500;
+    font-size:0.9rem !important;
+  }
+  .nav-cta:hover{background:var(--copper-bright);}
+  .menu-btn{display:none; background:none; border:none; color:var(--cream); font-size:1.6rem; cursor:pointer;}
+
+  @media (max-width:760px){
+    .navlinks{
+      position:fixed; top:70px; left:0; right:0;
+      background:var(--espresso-deep);
+      flex-direction:column; align-items:flex-start;
+      padding:24px; gap:20px;
+      border-bottom:1px solid var(--line);
+      transform:translateY(-140%);
+      transition:transform .3s ease;
+    }
+    .navlinks.open{transform:translateY(0);}
+    .menu-btn{display:block;}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding-top:64px; padding-bottom:64px;
+    background:
+      radial-gradient(ellipse at 78% 20%, rgba(181,101,46,0.16), transparent 55%),
+      var(--ink);
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:56px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5.4vw, 4.4rem);
+    line-height:1.04;
+    letter-spacing:-0.01em;
+    opacity:0;
+    animation: rise .8s ease forwards .1s;
+  }
+  .hero .role{
+    font-size:1.1rem;
+    color:var(--tan);
+    margin-top:16px;
+    font-weight:500;
+    opacity:0;
+    animation: rise .8s ease forwards .3s;
+  }
+  .hero p.desc{
+    margin-top:20px;
+    max-width:46ch;
+    color:var(--tan-soft);
+    font-size:1.02rem;
+    opacity:0;
+    animation: rise .8s ease forwards .45s;
+  }
+  .hero-ctas{
+    margin-top:32px;
+    display:flex; gap:14px; flex-wrap:wrap;
+    opacity:0;
+    animation: rise .8s ease forwards .6s;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 26px;
+    border-radius:3px;
+    font-weight:500;
+    font-size:0.96rem;
+    transition:transform .18s ease, background .2s ease;
+    border:1px solid transparent;
+  }
+  .btn-primary{background:var(--copper); color:var(--cream);}
+  .btn-primary:hover{background:var(--copper-bright); transform:translateY(-2px);}
+  .btn-ghost{border-color:var(--line); color:var(--cream);}
+  .btn-ghost:hover{border-color:var(--tan); transform:translateY(-2px);}
+
+  .hero-photo{
+    position:relative;
+    opacity:0;
+    animation: rise-photo 1s ease forwards .25s;
+  }
+  .hero-photo .frame{
+    position:relative;
+    border:1px solid var(--line);
+    padding:14px;
+    background:var(--espresso-deep);
+    border-radius:4px;
+  }
+  .hero-photo img{
+    border-radius:2px;
+    filter: sepia(0.12) saturate(1.05);
+  }
+  .hero-photo .tag{
+    position:absolute; bottom:-18px; left:-18px;
+    background:var(--copper);
+    color:var(--cream);
+    padding:10px 16px;
+    border-radius:3px;
+    font-size:0.85rem;
+    font-weight:500;
+    box-shadow:0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  @keyframes rise{
+    from{opacity:0; transform:translateY(16px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @keyframes rise-photo{
+    from{opacity:0; transform:translateY(24px) scale(0.98);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+
+  @media (max-width:820px){
+    .hero .wrap{grid-template-columns:1fr; text-align:left;}
+    .hero-photo{max-width:340px;}
+  }
+
+  /* ---------- services ---------- */
+  .services-track{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:40px;
+  }
+  .service-cel{
+    background:var(--ink);
+    padding:36px 30px;
+    position:relative;
+  }
+  .service-cel h3{font-size:1.35rem; margin-bottom:12px;}
+  .service-cel p{color:var(--tan-soft); font-size:0.95rem; margin:0;}
+  .service-cel .mark{
+    font-family:'Fraunces', serif;
+    font-size:0.85rem;
+    color:var(--copper-bright);
+    margin-bottom:18px;
+    display:block;
+  }
+  @media (max-width:820px){
+    .services-track{grid-template-columns:1fr; overflow-x:visible;}
+  }
+
+  /* ---------- work / social reel ---------- */
+  .work-section{background:var(--espresso-deep);}
+  .work-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+    margin-top:40px;
+  }
+  .work-card{
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:26px 22px;
+    background:linear-gradient(160deg, rgba(201,160,106,0.06), transparent);
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .work-card:hover{border-color:var(--tan); transform:translateY(-4px);}
+  .work-card .platform{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    margin-bottom:8px;
+  }
+  .work-card p{color:var(--tan-soft); font-size:0.9rem; margin:0 0 18px;}
+  .work-card .go{color:var(--copper-bright); font-size:0.9rem; font-weight:500;}
+  @media (max-width:900px){
+    .work-grid{grid-template-columns:repeat(2, 1fr);}
+  }
+  @media (max-width:520px){
+    .work-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- pricing / order ---------- */
+  .order-wrap{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:56px;
+    align-items:start;
+    margin-top:40px;
+  }
+  .price-card{
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:36px 32px;
+    background:var(--espresso-deep);
+  }
+  .price-card .amount{
+    font-family:'Fraunces', serif;
+    font-size:3rem;
+    color:var(--tan-soft);
+  }
+  .price-card .amount small{font-size:1rem; color:var(--tan); font-weight:500; display:block; margin-top:6px;}
+  .price-card ul{list-style:none; padding:0; margin:24px 0 0; color:var(--tan-soft); font-size:0.94rem;}
+  .price-card li{padding:9px 0; border-top:1px solid var(--line);}
+  .price-card li:first-child{border-top:none;}
+
+  form.order-form{
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:32px;
+    background:rgba(243,233,216,0.02);
+  }
+  .field{margin-bottom:18px;}
+  .field label{display:block; font-size:0.85rem; color:var(--tan); margin-bottom:7px; font-weight:500;}
+  .field input, .field select, .field textarea{
+    width:100%;
+    background:var(--ink);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:12px 14px;
+    color:var(--cream);
+    font-family:'Work Sans', sans-serif;
+    font-size:0.95rem;
+  }
+  .field textarea{resize:vertical; min-height:90px;}
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--copper-bright);
+    outline-offset:1px;
+  }
+  .order-form .btn{width:100%; justify-content:center; margin-top:6px;}
+
+  @media (max-width:860px){
+    .order-wrap{grid-template-columns:1fr;}
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--espresso-deep);
+    border-top:1px solid var(--line);
+    padding:56px 0 32px;
+  }
+  .footer-top{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px;
+  }
+  .footer-brand h3{font-size:1.5rem;}
+  .footer-brand p{color:var(--tan-soft); margin-top:8px; max-width:34ch; font-size:0.92rem;}
+  .footer-col h4{
+    font-size:0.85rem;
+    color:var(--tan);
+    margin-bottom:14px;
+    font-weight:500;
+  }
+  .footer-col a, .footer-col p{
+    display:block;
+    color:var(--tan-soft);
+    font-size:0.92rem;
+    margin-bottom:9px;
+    transition:color .2s;
+  }
+  .footer-col a:hover{color:var(--cream);}
+  .footer-bottom{
+    margin-top:44px; padding-top:22px;
+    border-top:1px solid var(--line);
+    color:var(--tan);
+    font-size:0.82rem;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">Malik Abdul <span>Hanan</span></div>
+    <div class="navlinks" id="navlinks">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#order">Pricing</a>
+      <a href="#contact">Contact</a>
+      <a href="#order" class="nav-cta">Book a video</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  </nav>
+</header>
+
+<div class="filmstrip" aria-hidden="true"></div>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Malik Abdul Hanan</h1>
+      <div class="role">Vlog, event &amp; video editor — cutting on mobile since 2023</div>
+      <p class="desc">I turn raw footage into videos people actually watch till the end — vlogs, event highlights, and everyday content, all edited on CapCut and Alight Motion.</p>
+      <div class="hero-ctas">
+        <a href="#order" class="btn btn-primary">Book a video</a>
+        <a href="#work" class="btn btn-ghost">See my work</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="frame">
+        <img src="assets/malik.png" alt="Malik Abdul Hanan">
+      </div>
+      <div class="tag">3 years editing</div>
+    </div>
+  </div>
+</section>
+
+<div class="filmstrip" aria-hidden="true"></div>
+
+<section id="services">
+  <div class="wrap">
+    <div class="eyebrow">Services</div>
+    <h2 style="font-size:clamp(1.8rem,3.4vw,2.4rem);">What I edit</h2>
+    <div class="services-track">
+      <div class="service-cel">
+        <span class="mark">Vlogs</span>
+        <h3>Vlog editing</h3>
+        <p>Daily-life and travel footage cut into clean, watchable vlogs — pacing, music, captions and colour grading included.</p>
+      </div>
+      <div class="service-cel">
+        <span class="mark">Video</span>
+        <h3>Video editing</h3>
+        <p>General purpose editing for social posts, ads and personal projects — trims, transitions, sound design and text.</p>
+      </div>
+      <div class="service-cel">
+        <span class="mark">Events</span>
+        <h3>Event video editing</h3>
+        <p>Weddings, parties and gatherings turned into a highlight reel that actually feels like the day it was filmed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="work-section">
+  <div class="wrap">
+    <div class="eyebrow">Portfolio</div>
+    <h2 style="font-size:clamp(1.8rem,3.4vw,2.4rem);">See the work</h2>
+    <p style="color:var(--tan-soft); margin-top:12px; max-width:56ch;">My finished edits are posted across these platforms — have a look before you book.</p>
+    <div class="work-grid">
+      <a class="work-card" href="https://www.tiktok.com/@malik.abdul.hanan00" target="_blank" rel="noopener">
+        <div class="platform">TikTok</div>
+        <p>Short vlog &amp; trend cuts</p>
+        <div class="go">Watch →</div>
+      </a>
+      <a class="work-card" href="https://www.instagram.com/malik.abdul.hanan" target="_blank" rel="noopener">
+        <div class="platform">Instagram</div>
+        <p>Reels &amp; event highlights</p>
+        <div class="go">Watch →</div>
+      </a>
+      <a class="work-card" href="https://youtube.com/@malikabdulhanan-n2n" target="_blank" rel="noopener">
+        <div class="platform">YouTube</div>
+        <p>Longer vlogs &amp; full edits</p>
+        <div class="go">Watch →</div>
+      </a>
+      <a class="work-card" href="https://www.facebook.com/share/1BdbRoaKCm/" target="_blank" rel="noopener">
+        <div class="platform">Facebook</div>
+        <p>Client videos &amp; updates</p>
+        <div class="go">Watch →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <div class="wrap">
+    <div class="eyebrow">Pricing &amp; booking</div>
+    <h2 style="font-size:clamp(1.8rem,3.4vw,2.4rem);">Book a video</h2>
+    <div class="order-wrap">
+      <div class="price-card">
+        <div class="amount">Rs. 5,000 <small>starting price, per video</small></div>
+        <ul>
+          <li>Final price depends on video length &amp; complexity</li>
+          <li>Vlog, video or event editing</li>
+          <li>Music, captions &amp; colour grading included</li>
+          <li>Send your footage details for an exact quote</li>
+        </ul>
+      </div>
+      <form class="order-form" id="orderForm">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input type="text" id="name" placeholder="e.g. Ahmed Raza" required>
+        </div>
+        <div class="field">
+          <label for="type">Type of video</label>
+          <select id="type">
+            <option>Vlog editing</option>
+            <option>Video editing</option>
+            <option>Event video editing</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="details">Footage details / what you need</label>
+          <textarea id="details" placeholder="e.g. 20 min of raw footage from a birthday party, need a 3 min highlight video"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send order on WhatsApp</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Malik Abdul Hanan</h3>
+        <p>Vlog, video &amp; event editor working entirely on mobile — CapCut &amp; Alight Motion.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:malikabdulhanan369@gmail.com">malikabdulhanan369@gmail.com</a>
+        <a href="tel:03131520210">0313-1520210</a>
+        <a href="tel:03223437401">0322-3437401</a>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <a href="https://www.tiktok.com/@malik.abdul.hanan00" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.instagram.com/malik.abdul.hanan" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://youtube.com/@malikabdulhanan-n2n" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://www.facebook.com/share/1BdbRoaKCm/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Malik Abdul Hanan</span>
+      <span>Editing on mobile since 2023</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const navlinks = document.getElementById('navlinks');
+  menuBtn.addEventListener('click', () => navlinks.classList.toggle('open'));
+  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+
+  const form = document.getElementById('orderForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const type = document.getElementById('type').value;
+    const details = document.getElementById('details').value.trim();
+    const msg = `Hi Malik, I'd like to book a video edit.%0AName: ${encodeURIComponent(name)}%0AType: ${encodeURIComponent(type)}%0ADetails: ${encodeURIComponent(details)}`;
+    window.open(`https://wa.me/923131520210?text=${msg}`, '_blank');
+  });
+</script>
+
+</body>
+</html>
